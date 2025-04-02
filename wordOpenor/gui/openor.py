@@ -5,8 +5,9 @@ import PyQt6.QtWidgets as qt
 import PyQt6.QtGui as qt1
 import PyQt6.QtCore as qt2
 class Openor(qt.QDialog):
-    def __init__(self,p,path:str):
+    def __init__(self,p,path:str,spliter:str):
         super().__init__(p)
+        self.spliter=spliter
         self.path=path
         self.resize(600,600)
         self.pages=[]
@@ -58,12 +59,15 @@ class Openor(qt.QDialog):
         bookMarks.editPage(self.path,self.index)
         self.text.setText(self.pages[self.index])
         winsound.PlaySound("data/sounds/previous_page.wav",1)
-    def paginateText(self,text, words_per_page=10):
+    def paginateText(self,text):
         words = text.split("\n")
         pages = []
-        for i in range(0, len(words), words_per_page):
-            page = "\n".join(words[i:i+words_per_page])
-            pages.append(page)
+        page=""
+        for i in words:
+            page+=i + "\n"
+            if i.startswith(self.spliter):
+                pages.append(page)
+                page=""
         return pages
     def goToGoPage(self):
         page,ok=qt.QInputDialog.getInt(self,_("page number"),_("type page number"),self.index+1,1,len(self.pages))

@@ -14,6 +14,8 @@ class main (qt.QMainWindow):
         super().__init__()
         self.setWindowTitle(app.name + _("version : ") + str(app.version))
         layout=qt.QVBoxLayout()
+        self.spliter=qt.QLineEdit()
+        layout.addWidget(self.spliter)
         self.open=guiTools.QPushButton(_("open"))
         self.open.clicked.connect(self.onOpen)
         layout.addWidget(self.open)
@@ -75,7 +77,7 @@ class main (qt.QMainWindow):
     def onOpen(self):
         file=qt.QFileDialog.getOpenFileName(self,_("select docx file"))
         if file:
-            gui.Openor(self,file[0]).exec()
+            gui.Openor(self,file[0],self.spliter.text()).exec()
 App=qt.QApplication([])
 w=main()
 w.show()
